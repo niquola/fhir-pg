@@ -2,13 +2,54 @@
 module Gen
   module Db
     def db(version=nil)
-      @db ||= doc.xpath('//Profile/structure/element').each_with_object({}) do |el, acc|
+      build_type(elements, 'Patient')
+    end
+
+    def elements
+      @elements ||= elements_doc.xpath('//Profile/structure/element').each_with_object({}) do |el, acc|
         acc[Meta.path(el)] = el
       end
     end
 
-    def doc
-      parse_doc(Pth.from_root_path("vendor/profiles-resources.xml"))
+    def datatypes
+      @datatypes ||= {}.tap do |res|
+        datatypes_doc.xpath('//simpleType').each do |el|
+          res[el[:name]] = el
+        end
+
+        datatypes_doc.xpath('//complexType').each do |el|
+          res[el[:name]]= el
+        end
+      end
+    end
+
+    def datatypes_doc
+      @datatypes_doc ||= parse_doc(Pth.from_root_path("vendor/fhir-base.xsd"))
+    end
+
+    def elements_doc
+      @elements_doc ||= parse_doc(Pth.from_root_path("vendor/profiles-resources.xml"))
+    end
+
+    def build_type(db, path)
+      type = {
+        path: path,
+        attributes: [],
+        types: []
+      }
+
+      db.each do |p, el|
+        next unless direct_parent?(path, p, el)
+        puts p
+        p Meta.attr(el, 'min')
+        p Meta.attr(el, 'max')
+      end
+    end
+
+    def direct_parent?(path, p, el)
+      if p.start_with?(path) && p !~ /extension$/
+        (p.split('.') - path.split('.')).size == 1
+      end
     end
 
     def parse_doc(path)

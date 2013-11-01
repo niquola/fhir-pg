@@ -3,14 +3,15 @@ require 'active_support/core_ext'
 
 module Gen
   autoload :Meta, 'gen/meta.rb'
+  autoload :TypeMeta, 'gen/type_meta.rb'
   autoload :Db, 'gen/db.rb'
   autoload :Namings, 'gen/namings.rb'
   autoload :Pth, 'gen/pth.rb'
   autoload :Codeg, 'gen/codeg.rb'
 
   def generate
-    db = Db.db
-    p Meta.attributes(db, 'Patient').keys
+    Db.db
+    # p Meta.attributes(db, 'Patient').keys
   end
 
   def write_classes_to_dir(version, dir, classes)
