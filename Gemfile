@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+gem 'sequel'
+gem 'pg'
+gem 'activesupport'
+gem 'rspec'
+gem 'nokogiri'
