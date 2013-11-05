@@ -136,6 +136,8 @@ select array_to_json(array_agg(row_to_json(#{t}, true)), true) from
   SQL
 end
 
+create_pt
+
 def select
   sql = build_sql(Meta)
   # puts sql

@@ -8,6 +8,7 @@ module Gen
   autoload :Namings, 'gen/namings.rb'
   autoload :Pth, 'gen/pth.rb'
   autoload :Codeg, 'gen/codeg.rb'
+  autoload :Schema, 'gen/schema.rb'
 
   def generate
     Db.db

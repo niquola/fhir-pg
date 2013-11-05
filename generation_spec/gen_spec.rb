@@ -3,24 +3,6 @@ require_relative 'gen_spec_helper'
 describe Gen do
   include described_class
 
-  # RULES
-  #
-  # Resource, ValueObject, Type
-  #
-  # attribute type:
-  #   primitive
-  #   complex type
-  #   value_object
-  #   Type Union
-  #   resource ref
-  #
-  #
-  # Resourse has one primitive   => column
-  # Resourse has many primitive  => column[]
-  # Resourse has one (ValueObject || ComplexType)  => (1-1) table || pg_type
-  # Resourse has many (ValueObject || ComplexType) => (1-*) table
-  # Resourse has one UnionType   => column
-
   def attribute_type(db, el)
     m = Gen::Meta
     types = m.types(el)
@@ -37,20 +19,51 @@ describe Gen do
     end
   end
 
+  def el_types(el)
+    el.xpath("./definition/type/code").map do |c|
+      c[:value]
+    end.compact
+  end
+
+  def el_name(el)
+    Gen::Meta.path(el).split('.').last.gsub('[x]','').underscore
+  end
+
+
+  def collect_attributes(parent_name, struct_el)
+    attributes(parent_name, struct_el.xpath('./element'))
+  end
+
+  def attributes(parent_name, elements)
+    m = Gen::Meta
+    elements.map do |el, acc|
+      next unless m.direct_parent?(parent_name, el)
+      next if m.technical?(el)
+      {
+        name: el_name(el),
+        path: m.path(el),
+        type: m.union_type?(el) ? m.types(el) : m.types(el).first,
+        kind: m.kind(el),
+        collection: m.collection?(el),
+        attributes: attributes(m.path(el), elements)
+      }
+    end.compact
+  end
+
+  SCHEMA = 'fhir'
+
   example do
     db = Gen::Db
-    m = Gen::Meta
-    tm = Gen::TypeMeta
-    db.elements.each do |path, el|
-      next unless path.start_with?('Patient')
-      next if m.technical?(el)
-      next unless m.direct_parent?('Patient', el)
-      mul = m.attr(el, 'max')
-      puts "#{path} #{attribute_type(db, el)} #{mul} #{m.types(el)}"
-      # tp_el = db.datatypes["#{m.type(el)}-primitive"]
-      # next unless tp_el
-      # types = m.types(el)
-      # name = (path.split('.') - ['Patient']).first.underscore
+    res = db.resources
+    .each_with_object({}) do |(resource, el), acc|
+      acc[resource] = {
+        name: resource,
+        type: :resource,
+        path: resource,
+        attributes: collect_attributes(resource, el)
+      }
     end
+    open(File.dirname(__FILE__) + '/tmp.yaml','w') {|f| f<< res['Patient'].to_yaml}
+    puts Gen::Schema.generate(res['Patient'])
   end
 end

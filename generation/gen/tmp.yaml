@@ -1,0 +1,308 @@
+---
+:name: Patient
+:type: :resource
+:attributes:
+- :name: extension
+  :type: Extension
+  :kind: :complex_type
+  :collection: true
+  :attributes: []
+- :name: modifier_extension
+  :type: Extension
+  :kind: :complex_type
+  :collection: true
+  :attributes: []
+- :name: text
+  :type: Narrative
+  :kind: :complex_type
+  :collection: false
+  :attributes: []
+- :name: contained
+  :type: Resource
+  :kind: :complex_type
+  :collection: true
+  :attributes: []
+- :name: identifier
+  :type: Identifier
+  :kind: :complex_type
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: name
+  :type: HumanName
+  :kind: :complex_type
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: telecom
+  :type: Contact
+  :kind: :complex_type
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: gender
+  :type: CodeableConcept
+  :kind: :complex_type
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: birth_date
+  :type: dateTime
+  :kind: :primitive
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: deceased
+  :type:
+  - boolean
+  - dateTime
+  :kind: :polimorphic
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: address
+  :type: Address
+  :kind: :complex_type
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: marital_status
+  :type: CodeableConcept
+  :kind: :complex_type
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: multiple_birth
+  :type:
+  - boolean
+  - integer
+  :kind: :polimorphic
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: photo
+  :type: Attachment
+  :kind: :complex_type
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: contact
+  :type: 
+  :kind: :nested_type
+  :collection: true
+  :attributes:
+  - :name: modifier_extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+  - :name: relationship
+    :type: CodeableConcept
+    :kind: :complex_type
+    :collection: true
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: name
+    :type: HumanName
+    :kind: :complex_type
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: telecom
+    :type: Contact
+    :kind: :complex_type
+    :collection: true
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: address
+    :type: Address
+    :kind: :complex_type
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: gender
+    :type: CodeableConcept
+    :kind: :complex_type
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: organization
+    :type: Resource(Organization)
+    :kind: :resource_ref
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+- :name: animal
+  :type: 
+  :kind: :nested_type
+  :collection: false
+  :attributes:
+  - :name: modifier_extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+  - :name: species
+    :type: CodeableConcept
+    :kind: :complex_type
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: breed
+    :type: CodeableConcept
+    :kind: :complex_type
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: gender_status
+    :type: CodeableConcept
+    :kind: :complex_type
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+- :name: communication
+  :type: CodeableConcept
+  :kind: :complex_type
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: care_provider
+  :type: Resource(Organization|Practitioner)
+  :kind: :resource_ref
+  :collection: true
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: managing_organization
+  :type: Resource(Organization)
+  :kind: :resource_ref
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+- :name: link
+  :type: 
+  :kind: :nested_type
+  :collection: true
+  :attributes:
+  - :name: modifier_extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []
+  - :name: other
+    :type: Resource(Patient)
+    :kind: :resource_ref
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+  - :name: type
+    :type: code
+    :kind: :primitive
+    :collection: false
+    :attributes:
+    - :name: extension
+      :type: Extension
+      :kind: :complex_type
+      :collection: true
+      :attributes: []
+- :name: active
+  :type: boolean
+  :kind: :primitive
+  :collection: false
+  :attributes:
+  - :name: extension
+    :type: Extension
+    :kind: :complex_type
+    :collection: true
+    :attributes: []

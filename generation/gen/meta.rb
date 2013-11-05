@@ -17,7 +17,7 @@ module Gen::Meta
     el.xpath("./path").first.try(:[], :value)
   end
 
-  def resource?(el)
+  def resource_ref?(el)
     type(el).match(/^Resource\(/)
   end
 
@@ -29,8 +29,31 @@ module Gen::Meta
     attr(el, 'max') == '*'
   end
 
+  def compound_type?(el)
+    %w[nested_type complex_type].include?(kind(el).to_s)
+  end
+
+  def required?(el)
+    attr(el, 'min') == '1'
+  end
+
+  def primitive?(el)
+    types = types(el)
+    Gen::Db.datatypes["#{types.first}-primitive"]
+  end
+
+  def kind(el)
+    types = types(el)
+    return :nested_type if types.empty?
+    return :polimorphic if union_type?(el)
+    return :resource_ref  if resource_ref?(el)
+    return :primitive   if primitive?(el)
+    :complex_type
+  end
+
   def direct_parent?(ppath, el)
-    (path(el).split('.') - ppath.split('.')).size == 1
+    path = path(el)
+    path.start_with?(ppath) && (path.split('.') - ppath.split('.')).size == 1
   end
 
   def attributes(db, path)

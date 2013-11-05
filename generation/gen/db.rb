@@ -11,6 +11,14 @@ module Gen
       end
     end
 
+    def resources
+      @resources ||= elements_doc.xpath('//Profile/structure')
+      .each_with_object({}) do |el, acc|
+        type = el.xpath('./type').first[:value]
+        acc[type] = el
+      end
+    end
+
     def datatypes
       @datatypes ||= {}.tap do |res|
         datatypes_doc.xpath('//simpleType').each do |el|
