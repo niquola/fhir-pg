@@ -1,0 +1,2198 @@
+---
+integer:
+  :type: integer
+  :kind: :primitive
+dateTime:
+  :type: dateTime
+  :kind: :primitive
+code:
+  :type: code
+  :kind: :primitive
+date:
+  :type: date
+  :kind: :primitive
+decimal:
+  :type: decimal
+  :kind: :primitive
+uri:
+  :type: uri
+  :kind: :primitive
+id:
+  :type: id
+  :kind: :primitive
+base64Binary:
+  :type: base64Binary
+  :kind: :primitive
+oid:
+  :type: oid
+  :kind: :primitive
+string:
+  :type: string
+  :kind: :primitive
+boolean:
+  :type: boolean
+  :kind: :primitive
+uuid:
+  :type: uuid
+  :kind: :primitive
+instant:
+  :type: instant
+  :kind: :primitive
+NarrativeStatus:
+  :type: NarrativeStatus
+  :kind: :enum
+  :options:
+  - additional
+  - empty
+  - extensions
+  - generated
+QuantityCompararator:
+  :type: QuantityCompararator
+  :kind: :enum
+  :options:
+  - <
+  - <=
+  - '>'
+  - '>='
+IdentifierUse:
+  :type: IdentifierUse
+  :kind: :enum
+  :options:
+  - official
+  - secondary
+  - temp
+  - usual
+EventTiming:
+  :type: EventTiming
+  :kind: :enum
+  :options:
+  - AC
+  - ACD
+  - ACM
+  - ACV
+  - HS
+  - PC
+  - PCD
+  - PCM
+  - PCV
+  - WAKE
+UnitsOfTime:
+  :type: UnitsOfTime
+  :kind: :enum
+  :options:
+  - a
+  - d
+  - h
+  - min
+  - mo
+  - s
+  - wk
+ContactSystem:
+  :type: ContactSystem
+  :kind: :enum
+  :options:
+  - email
+  - fax
+  - phone
+  - url
+ContactUse:
+  :type: ContactUse
+  :kind: :enum
+  :options:
+  - home
+  - mobile
+  - old
+  - temp
+  - work
+AddressUse:
+  :type: AddressUse
+  :kind: :enum
+  :options:
+  - home
+  - old
+  - temp
+  - work
+NameUse:
+  :type: NameUse
+  :kind: :enum
+  :options:
+  - anonymous
+  - maiden
+  - nickname
+  - official
+  - old
+  - temp
+  - usual
+DocumentReferenceStatus:
+  :type: DocumentReferenceStatus
+  :kind: :enum
+  :options:
+  - current
+  - error
+  - superceded
+ObservationStatus:
+  :type: ObservationStatus
+  :kind: :enum
+  :options:
+  - amended
+  - cancelled
+  - final
+  - interim
+  - registered
+  - withdrawn
+ValueSetStatus:
+  :type: ValueSetStatus
+  :kind: :enum
+  :options:
+  - active
+  - draft
+  - retired
+xmlIdRef:
+  :type: xmlIdRef
+  :kind: :complex_type
+  :columns: {}
+ResourceType:
+  :type: ResourceType
+  :kind: :complex_type
+  :columns: {}
+SampledDataDataType:
+  :type: SampledDataDataType
+  :kind: :complex_type
+  :columns: {}
+Element:
+  :type: Element
+  :kind: :complex_type
+  :columns: {}
+  :referenced_by:
+    :extension:
+      :name: extension
+      :path: Element.extension
+      :type: Extension
+      :kind: :complex_type
+      :requied: false
+      :collection: true
+BackboneElement:
+  :type: BackboneElement
+  :kind: :complex_type
+  :columns: {}
+  :referenced_by:
+    :modifierExtension:
+      :name: modifierExtension
+      :path: BackboneElement.modifierExtension
+      :type: Extension
+      :kind: :complex_type
+      :requied: false
+      :collection: true
+Resource.Inline:
+  :type: Resource.Inline
+  :kind: :complex_type
+  :columns:
+    ! '':
+      :name: 
+      :path: Resource.Inline.
+      :type: 
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+Resource:
+  :type: Resource
+  :kind: :complex_type
+  :columns:
+    :language:
+      :name: language
+      :path: Resource.language
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :text:
+      :name: text
+      :path: Resource.text
+      :type: Narrative
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :status:
+          :name: status
+          :path: Resource.text.status
+          :type: NarrativeStatus
+          :kind: :enum
+          :requied: true
+          :collection: false
+        ! '':
+          :name: 
+          :path: Resource.text.
+          :type: 
+          :kind: :complex_type
+          :requied: true
+          :collection: false
+  :referenced_by:
+    :contained:
+      :name: contained
+      :path: Resource.contained
+      :type: Resource.Inline
+      :kind: :complex_type
+      :requied: false
+      :collection: true
+Extension:
+  :type: Extension
+  :kind: :complex_type
+  :columns:
+    :url:
+      :name: url
+      :path: Extension.url
+      :type: uri
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueBoolean:
+      :name: valueBoolean
+      :path: Extension.valueBoolean
+      :type: boolean
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueInteger:
+      :name: valueInteger
+      :path: Extension.valueInteger
+      :type: integer
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueDecimal:
+      :name: valueDecimal
+      :path: Extension.valueDecimal
+      :type: decimal
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueBase64Binary:
+      :name: valueBase64Binary
+      :path: Extension.valueBase64Binary
+      :type: base64Binary
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueInstant:
+      :name: valueInstant
+      :path: Extension.valueInstant
+      :type: instant
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueString:
+      :name: valueString
+      :path: Extension.valueString
+      :type: string
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueUri:
+      :name: valueUri
+      :path: Extension.valueUri
+      :type: uri
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueDate:
+      :name: valueDate
+      :path: Extension.valueDate
+      :type: date
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueDateTime:
+      :name: valueDateTime
+      :path: Extension.valueDateTime
+      :type: dateTime
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueCode:
+      :name: valueCode
+      :path: Extension.valueCode
+      :type: code
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :valueAttachment:
+      :name: valueAttachment
+      :path: Extension.valueAttachment
+      :type: Attachment
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :contentType:
+          :name: contentType
+          :path: Extension.valueAttachment.contentType
+          :type: code
+          :kind: :primitive
+          :requied: true
+          :collection: false
+        :language:
+          :name: language
+          :path: Extension.valueAttachment.language
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :data:
+          :name: data
+          :path: Extension.valueAttachment.data
+          :type: base64Binary
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :url:
+          :name: url
+          :path: Extension.valueAttachment.url
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :size:
+          :name: size
+          :path: Extension.valueAttachment.size
+          :type: integer
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :hash:
+          :name: hash
+          :path: Extension.valueAttachment.hash
+          :type: base64Binary
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :title:
+          :name: title
+          :path: Extension.valueAttachment.title
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :valueIdentifier:
+      :name: valueIdentifier
+      :path: Extension.valueIdentifier
+      :type: Identifier
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :use:
+          :name: use
+          :path: Extension.valueIdentifier.use
+          :type: IdentifierUse
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :label:
+          :name: label
+          :path: Extension.valueIdentifier.label
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: Extension.valueIdentifier.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :value:
+          :name: value
+          :path: Extension.valueIdentifier.value
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :period:
+          :name: period
+          :path: Extension.valueIdentifier.period
+          :type: Period
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :start:
+              :name: start
+              :path: Extension.valueIdentifier.period.start
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :end:
+              :name: end
+              :path: Extension.valueIdentifier.period.end
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+        :assigner:
+          :name: assigner
+          :path: Extension.valueIdentifier.assigner
+          :type: ResourceReference
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :reference:
+              :name: reference
+              :path: Extension.valueIdentifier.assigner.reference
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :display:
+              :name: display
+              :path: Extension.valueIdentifier.assigner.display
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+    :valueCodeableConcept:
+      :name: valueCodeableConcept
+      :path: Extension.valueCodeableConcept
+      :type: CodeableConcept
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :text:
+          :name: text
+          :path: Extension.valueCodeableConcept.text
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+      :referenced_by: &1
+        :coding:
+          :name: coding
+          :path: CodeableConcept.coding
+          :type: Coding
+          :kind: :complex_type
+          :requied: false
+          :collection: true
+    :valueCoding:
+      :name: valueCoding
+      :path: Extension.valueCoding
+      :type: Coding
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :system:
+          :name: system
+          :path: Extension.valueCoding.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :version:
+          :name: version
+          :path: Extension.valueCoding.version
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: Extension.valueCoding.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :display:
+          :name: display
+          :path: Extension.valueCoding.display
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :primary:
+          :name: primary
+          :path: Extension.valueCoding.primary
+          :type: boolean
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :valueSet:
+          :name: valueSet
+          :path: Extension.valueCoding.valueSet
+          :type: ResourceReference
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :reference:
+              :name: reference
+              :path: Extension.valueCoding.valueSet.reference
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :display:
+              :name: display
+              :path: Extension.valueCoding.valueSet.display
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+    :valueQuantity:
+      :name: valueQuantity
+      :path: Extension.valueQuantity
+      :type: Quantity
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :value:
+          :name: value
+          :path: Extension.valueQuantity.value
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :comparator:
+          :name: comparator
+          :path: Extension.valueQuantity.comparator
+          :type: QuantityCompararator
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :units:
+          :name: units
+          :path: Extension.valueQuantity.units
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: Extension.valueQuantity.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: Extension.valueQuantity.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :valueRange:
+      :name: valueRange
+      :path: Extension.valueRange
+      :type: Range
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :low:
+          :name: low
+          :path: Extension.valueRange.low
+          :type: Quantity
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :value:
+              :name: value
+              :path: Extension.valueRange.low.value
+              :type: decimal
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :comparator:
+              :name: comparator
+              :path: Extension.valueRange.low.comparator
+              :type: QuantityCompararator
+              :kind: :enum
+              :requied: false
+              :collection: false
+            :units:
+              :name: units
+              :path: Extension.valueRange.low.units
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :system:
+              :name: system
+              :path: Extension.valueRange.low.system
+              :type: uri
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :code:
+              :name: code
+              :path: Extension.valueRange.low.code
+              :type: code
+              :kind: :primitive
+              :requied: false
+              :collection: false
+        :high:
+          :name: high
+          :path: Extension.valueRange.high
+          :type: Quantity
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :value:
+              :name: value
+              :path: Extension.valueRange.high.value
+              :type: decimal
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :comparator:
+              :name: comparator
+              :path: Extension.valueRange.high.comparator
+              :type: QuantityCompararator
+              :kind: :enum
+              :requied: false
+              :collection: false
+            :units:
+              :name: units
+              :path: Extension.valueRange.high.units
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :system:
+              :name: system
+              :path: Extension.valueRange.high.system
+              :type: uri
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :code:
+              :name: code
+              :path: Extension.valueRange.high.code
+              :type: code
+              :kind: :primitive
+              :requied: false
+              :collection: false
+    :valuePeriod:
+      :name: valuePeriod
+      :path: Extension.valuePeriod
+      :type: Period
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :start:
+          :name: start
+          :path: Extension.valuePeriod.start
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :end:
+          :name: end
+          :path: Extension.valuePeriod.end
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :valueRatio:
+      :name: valueRatio
+      :path: Extension.valueRatio
+      :type: Ratio
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :numerator:
+          :name: numerator
+          :path: Extension.valueRatio.numerator
+          :type: Quantity
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :value:
+              :name: value
+              :path: Extension.valueRatio.numerator.value
+              :type: decimal
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :comparator:
+              :name: comparator
+              :path: Extension.valueRatio.numerator.comparator
+              :type: QuantityCompararator
+              :kind: :enum
+              :requied: false
+              :collection: false
+            :units:
+              :name: units
+              :path: Extension.valueRatio.numerator.units
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :system:
+              :name: system
+              :path: Extension.valueRatio.numerator.system
+              :type: uri
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :code:
+              :name: code
+              :path: Extension.valueRatio.numerator.code
+              :type: code
+              :kind: :primitive
+              :requied: false
+              :collection: false
+        :denominator:
+          :name: denominator
+          :path: Extension.valueRatio.denominator
+          :type: Quantity
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :value:
+              :name: value
+              :path: Extension.valueRatio.denominator.value
+              :type: decimal
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :comparator:
+              :name: comparator
+              :path: Extension.valueRatio.denominator.comparator
+              :type: QuantityCompararator
+              :kind: :enum
+              :requied: false
+              :collection: false
+            :units:
+              :name: units
+              :path: Extension.valueRatio.denominator.units
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :system:
+              :name: system
+              :path: Extension.valueRatio.denominator.system
+              :type: uri
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :code:
+              :name: code
+              :path: Extension.valueRatio.denominator.code
+              :type: code
+              :kind: :primitive
+              :requied: false
+              :collection: false
+    :valueResource:
+      :name: valueResource
+      :path: Extension.valueResource
+      :type: ResourceReference
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :reference:
+          :name: reference
+          :path: Extension.valueResource.reference
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :display:
+          :name: display
+          :path: Extension.valueResource.display
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :valueSampledData:
+      :name: valueSampledData
+      :path: Extension.valueSampledData
+      :type: SampledData
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :origin:
+          :name: origin
+          :path: Extension.valueSampledData.origin
+          :type: Quantity
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :value:
+              :name: value
+              :path: Extension.valueSampledData.origin.value
+              :type: decimal
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :comparator:
+              :name: comparator
+              :path: Extension.valueSampledData.origin.comparator
+              :type: QuantityCompararator
+              :kind: :enum
+              :requied: false
+              :collection: false
+            :units:
+              :name: units
+              :path: Extension.valueSampledData.origin.units
+              :type: string
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :system:
+              :name: system
+              :path: Extension.valueSampledData.origin.system
+              :type: uri
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :code:
+              :name: code
+              :path: Extension.valueSampledData.origin.code
+              :type: code
+              :kind: :primitive
+              :requied: false
+              :collection: false
+        :period:
+          :name: period
+          :path: Extension.valueSampledData.period
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :factor:
+          :name: factor
+          :path: Extension.valueSampledData.factor
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :lowerLimit:
+          :name: lowerLimit
+          :path: Extension.valueSampledData.lowerLimit
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :upperLimit:
+          :name: upperLimit
+          :path: Extension.valueSampledData.upperLimit
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :dimensions:
+          :name: dimensions
+          :path: Extension.valueSampledData.dimensions
+          :type: integer
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :data:
+          :name: data
+          :path: Extension.valueSampledData.data
+          :type: SampledDataDataType
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+    :valueHumanName:
+      :name: valueHumanName
+      :path: Extension.valueHumanName
+      :type: HumanName
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :use:
+          :name: use
+          :path: Extension.valueHumanName.use
+          :type: NameUse
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :text:
+          :name: text
+          :path: Extension.valueHumanName.text
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :period:
+          :name: period
+          :path: Extension.valueHumanName.period
+          :type: Period
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :start:
+              :name: start
+              :path: Extension.valueHumanName.period.start
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :end:
+              :name: end
+              :path: Extension.valueHumanName.period.end
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+      :referenced_by: &4
+        :family:
+          :name: family
+          :path: HumanName.family
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: true
+        :given:
+          :name: given
+          :path: HumanName.given
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: true
+        :prefix:
+          :name: prefix
+          :path: HumanName.prefix
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: true
+        :suffix:
+          :name: suffix
+          :path: HumanName.suffix
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: true
+    :valueAddress:
+      :name: valueAddress
+      :path: Extension.valueAddress
+      :type: Address
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :use:
+          :name: use
+          :path: Extension.valueAddress.use
+          :type: AddressUse
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :text:
+          :name: text
+          :path: Extension.valueAddress.text
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :city:
+          :name: city
+          :path: Extension.valueAddress.city
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :state:
+          :name: state
+          :path: Extension.valueAddress.state
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :zip:
+          :name: zip
+          :path: Extension.valueAddress.zip
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :country:
+          :name: country
+          :path: Extension.valueAddress.country
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :period:
+          :name: period
+          :path: Extension.valueAddress.period
+          :type: Period
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :start:
+              :name: start
+              :path: Extension.valueAddress.period.start
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :end:
+              :name: end
+              :path: Extension.valueAddress.period.end
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+      :referenced_by: &3
+        :line:
+          :name: line
+          :path: Address.line
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: true
+    :valueContact:
+      :name: valueContact
+      :path: Extension.valueContact
+      :type: Contact
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :system:
+          :name: system
+          :path: Extension.valueContact.system
+          :type: ContactSystem
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :value:
+          :name: value
+          :path: Extension.valueContact.value
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :use:
+          :name: use
+          :path: Extension.valueContact.use
+          :type: ContactUse
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :period:
+          :name: period
+          :path: Extension.valueContact.period
+          :type: Period
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :start:
+              :name: start
+              :path: Extension.valueContact.period.start
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :end:
+              :name: end
+              :path: Extension.valueContact.period.end
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+    :valueSchedule:
+      :name: valueSchedule
+      :path: Extension.valueSchedule
+      :type: Schedule
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+      :columns:
+        :repeat:
+          :name: repeat
+          :path: Extension.valueSchedule.repeat
+          :type: Schedule.Repeat
+          :kind: :complex_type
+          :requied: false
+          :collection: false
+          :columns:
+            :frequency:
+              :name: frequency
+              :path: Extension.valueSchedule.repeat.frequency
+              :type: integer
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :when:
+              :name: when
+              :path: Extension.valueSchedule.repeat.when
+              :type: EventTiming
+              :kind: :enum
+              :requied: false
+              :collection: false
+            :duration:
+              :name: duration
+              :path: Extension.valueSchedule.repeat.duration
+              :type: decimal
+              :kind: :primitive
+              :requied: true
+              :collection: false
+            :units:
+              :name: units
+              :path: Extension.valueSchedule.repeat.units
+              :type: UnitsOfTime
+              :kind: :enum
+              :requied: true
+              :collection: false
+            :count:
+              :name: count
+              :path: Extension.valueSchedule.repeat.count
+              :type: integer
+              :kind: :primitive
+              :requied: false
+              :collection: false
+            :end:
+              :name: end
+              :path: Extension.valueSchedule.repeat.end
+              :type: dateTime
+              :kind: :primitive
+              :requied: false
+              :collection: false
+      :referenced_by: &2
+        :event:
+          :name: event
+          :path: Schedule.event
+          :type: Period
+          :kind: :complex_type
+          :requied: false
+          :collection: true
+Narrative:
+  :type: Narrative
+  :kind: :complex_type
+  :columns:
+    :status:
+      :name: status
+      :path: Narrative.status
+      :type: NarrativeStatus
+      :kind: :enum
+      :requied: true
+      :collection: false
+    ! '':
+      :name: 
+      :path: Narrative.
+      :type: 
+      :kind: :complex_type
+      :requied: true
+      :collection: false
+Period:
+  :type: Period
+  :kind: :complex_type
+  :columns:
+    :start:
+      :name: start
+      :path: Period.start
+      :type: dateTime
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :end:
+      :name: end
+      :path: Period.end
+      :type: dateTime
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Coding:
+  :type: Coding
+  :kind: :complex_type
+  :columns:
+    :system:
+      :name: system
+      :path: Coding.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :version:
+      :name: version
+      :path: Coding.version
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Coding.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :display:
+      :name: display
+      :path: Coding.display
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :primary:
+      :name: primary
+      :path: Coding.primary
+      :type: boolean
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :valueSet:
+      :name: valueSet
+      :path: Coding.valueSet
+      :type: ResourceReference
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :reference:
+          :name: reference
+          :path: Coding.valueSet.reference
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :display:
+          :name: display
+          :path: Coding.valueSet.display
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+Range:
+  :type: Range
+  :kind: :complex_type
+  :columns:
+    :low:
+      :name: low
+      :path: Range.low
+      :type: Quantity
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :value:
+          :name: value
+          :path: Range.low.value
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :comparator:
+          :name: comparator
+          :path: Range.low.comparator
+          :type: QuantityCompararator
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :units:
+          :name: units
+          :path: Range.low.units
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: Range.low.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: Range.low.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :high:
+      :name: high
+      :path: Range.high
+      :type: Quantity
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :value:
+          :name: value
+          :path: Range.high.value
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :comparator:
+          :name: comparator
+          :path: Range.high.comparator
+          :type: QuantityCompararator
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :units:
+          :name: units
+          :path: Range.high.units
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: Range.high.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: Range.high.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+Quantity:
+  :type: Quantity
+  :kind: :complex_type
+  :columns:
+    :value:
+      :name: value
+      :path: Quantity.value
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :comparator:
+      :name: comparator
+      :path: Quantity.comparator
+      :type: QuantityCompararator
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :units:
+      :name: units
+      :path: Quantity.units
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Quantity.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Quantity.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Attachment:
+  :type: Attachment
+  :kind: :complex_type
+  :columns:
+    :contentType:
+      :name: contentType
+      :path: Attachment.contentType
+      :type: code
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :language:
+      :name: language
+      :path: Attachment.language
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :data:
+      :name: data
+      :path: Attachment.data
+      :type: base64Binary
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :url:
+      :name: url
+      :path: Attachment.url
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :size:
+      :name: size
+      :path: Attachment.size
+      :type: integer
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :hash:
+      :name: hash
+      :path: Attachment.hash
+      :type: base64Binary
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :title:
+      :name: title
+      :path: Attachment.title
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Ratio:
+  :type: Ratio
+  :kind: :complex_type
+  :columns:
+    :numerator:
+      :name: numerator
+      :path: Ratio.numerator
+      :type: Quantity
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :value:
+          :name: value
+          :path: Ratio.numerator.value
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :comparator:
+          :name: comparator
+          :path: Ratio.numerator.comparator
+          :type: QuantityCompararator
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :units:
+          :name: units
+          :path: Ratio.numerator.units
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: Ratio.numerator.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: Ratio.numerator.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :denominator:
+      :name: denominator
+      :path: Ratio.denominator
+      :type: Quantity
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :value:
+          :name: value
+          :path: Ratio.denominator.value
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :comparator:
+          :name: comparator
+          :path: Ratio.denominator.comparator
+          :type: QuantityCompararator
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :units:
+          :name: units
+          :path: Ratio.denominator.units
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: Ratio.denominator.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: Ratio.denominator.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+SampledData:
+  :type: SampledData
+  :kind: :complex_type
+  :columns:
+    :origin:
+      :name: origin
+      :path: SampledData.origin
+      :type: Quantity
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :value:
+          :name: value
+          :path: SampledData.origin.value
+          :type: decimal
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :comparator:
+          :name: comparator
+          :path: SampledData.origin.comparator
+          :type: QuantityCompararator
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :units:
+          :name: units
+          :path: SampledData.origin.units
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :system:
+          :name: system
+          :path: SampledData.origin.system
+          :type: uri
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :code:
+          :name: code
+          :path: SampledData.origin.code
+          :type: code
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :period:
+      :name: period
+      :path: SampledData.period
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :factor:
+      :name: factor
+      :path: SampledData.factor
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :lowerLimit:
+      :name: lowerLimit
+      :path: SampledData.lowerLimit
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :upperLimit:
+      :name: upperLimit
+      :path: SampledData.upperLimit
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :dimensions:
+      :name: dimensions
+      :path: SampledData.dimensions
+      :type: integer
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :data:
+      :name: data
+      :path: SampledData.data
+      :type: SampledDataDataType
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+ResourceReference:
+  :type: ResourceReference
+  :kind: :complex_type
+  :columns:
+    :reference:
+      :name: reference
+      :path: ResourceReference.reference
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :display:
+      :name: display
+      :path: ResourceReference.display
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+CodeableConcept:
+  :type: CodeableConcept
+  :kind: :complex_type
+  :columns:
+    :text:
+      :name: text
+      :path: CodeableConcept.text
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+  :referenced_by: *1
+Identifier:
+  :type: Identifier
+  :kind: :complex_type
+  :columns:
+    :use:
+      :name: use
+      :path: Identifier.use
+      :type: IdentifierUse
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :label:
+      :name: label
+      :path: Identifier.label
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Identifier.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :value:
+      :name: value
+      :path: Identifier.value
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :period:
+      :name: period
+      :path: Identifier.period
+      :type: Period
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :start:
+          :name: start
+          :path: Identifier.period.start
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :end:
+          :name: end
+          :path: Identifier.period.end
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+    :assigner:
+      :name: assigner
+      :path: Identifier.assigner
+      :type: ResourceReference
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :reference:
+          :name: reference
+          :path: Identifier.assigner.reference
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :display:
+          :name: display
+          :path: Identifier.assigner.display
+          :type: string
+          :kind: :primitive
+          :requied: false
+          :collection: false
+Age:
+  :type: Age
+  :kind: :complex_type
+  :columns:
+    :value:
+      :name: value
+      :path: Age.value
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :comparator:
+      :name: comparator
+      :path: Age.comparator
+      :type: QuantityCompararator
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :units:
+      :name: units
+      :path: Age.units
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Age.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Age.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Count:
+  :type: Count
+  :kind: :complex_type
+  :columns:
+    :value:
+      :name: value
+      :path: Count.value
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :comparator:
+      :name: comparator
+      :path: Count.comparator
+      :type: QuantityCompararator
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :units:
+      :name: units
+      :path: Count.units
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Count.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Count.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Money:
+  :type: Money
+  :kind: :complex_type
+  :columns:
+    :value:
+      :name: value
+      :path: Money.value
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :comparator:
+      :name: comparator
+      :path: Money.comparator
+      :type: QuantityCompararator
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :units:
+      :name: units
+      :path: Money.units
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Money.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Money.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Distance:
+  :type: Distance
+  :kind: :complex_type
+  :columns:
+    :value:
+      :name: value
+      :path: Distance.value
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :comparator:
+      :name: comparator
+      :path: Distance.comparator
+      :type: QuantityCompararator
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :units:
+      :name: units
+      :path: Distance.units
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Distance.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Distance.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Duration:
+  :type: Duration
+  :kind: :complex_type
+  :columns:
+    :value:
+      :name: value
+      :path: Duration.value
+      :type: decimal
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :comparator:
+      :name: comparator
+      :path: Duration.comparator
+      :type: QuantityCompararator
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :units:
+      :name: units
+      :path: Duration.units
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :system:
+      :name: system
+      :path: Duration.system
+      :type: uri
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :code:
+      :name: code
+      :path: Duration.code
+      :type: code
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Schedule:
+  :type: Schedule
+  :kind: :complex_type
+  :columns:
+    :repeat:
+      :name: repeat
+      :path: Schedule.repeat
+      :type: Schedule.Repeat
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :frequency:
+          :name: frequency
+          :path: Schedule.repeat.frequency
+          :type: integer
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :when:
+          :name: when
+          :path: Schedule.repeat.when
+          :type: EventTiming
+          :kind: :enum
+          :requied: false
+          :collection: false
+        :duration:
+          :name: duration
+          :path: Schedule.repeat.duration
+          :type: decimal
+          :kind: :primitive
+          :requied: true
+          :collection: false
+        :units:
+          :name: units
+          :path: Schedule.repeat.units
+          :type: UnitsOfTime
+          :kind: :enum
+          :requied: true
+          :collection: false
+        :count:
+          :name: count
+          :path: Schedule.repeat.count
+          :type: integer
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :end:
+          :name: end
+          :path: Schedule.repeat.end
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+  :referenced_by: *2
+Schedule.Repeat:
+  :type: Schedule.Repeat
+  :kind: :complex_type
+  :columns:
+    :frequency:
+      :name: frequency
+      :path: Schedule.Repeat.frequency
+      :type: integer
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :when:
+      :name: when
+      :path: Schedule.Repeat.when
+      :type: EventTiming
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :duration:
+      :name: duration
+      :path: Schedule.Repeat.duration
+      :type: decimal
+      :kind: :primitive
+      :requied: true
+      :collection: false
+    :units:
+      :name: units
+      :path: Schedule.Repeat.units
+      :type: UnitsOfTime
+      :kind: :enum
+      :requied: true
+      :collection: false
+    :count:
+      :name: count
+      :path: Schedule.Repeat.count
+      :type: integer
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :end:
+      :name: end
+      :path: Schedule.Repeat.end
+      :type: dateTime
+      :kind: :primitive
+      :requied: false
+      :collection: false
+Contact:
+  :type: Contact
+  :kind: :complex_type
+  :columns:
+    :system:
+      :name: system
+      :path: Contact.system
+      :type: ContactSystem
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :value:
+      :name: value
+      :path: Contact.value
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :use:
+      :name: use
+      :path: Contact.use
+      :type: ContactUse
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :period:
+      :name: period
+      :path: Contact.period
+      :type: Period
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :start:
+          :name: start
+          :path: Contact.period.start
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :end:
+          :name: end
+          :path: Contact.period.end
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+Address:
+  :type: Address
+  :kind: :complex_type
+  :columns:
+    :use:
+      :name: use
+      :path: Address.use
+      :type: AddressUse
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :text:
+      :name: text
+      :path: Address.text
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :city:
+      :name: city
+      :path: Address.city
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :state:
+      :name: state
+      :path: Address.state
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :zip:
+      :name: zip
+      :path: Address.zip
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :country:
+      :name: country
+      :path: Address.country
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :period:
+      :name: period
+      :path: Address.period
+      :type: Period
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :start:
+          :name: start
+          :path: Address.period.start
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :end:
+          :name: end
+          :path: Address.period.end
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+  :referenced_by: *3
+HumanName:
+  :type: HumanName
+  :kind: :complex_type
+  :columns:
+    :use:
+      :name: use
+      :path: HumanName.use
+      :type: NameUse
+      :kind: :enum
+      :requied: false
+      :collection: false
+    :text:
+      :name: text
+      :path: HumanName.text
+      :type: string
+      :kind: :primitive
+      :requied: false
+      :collection: false
+    :period:
+      :name: period
+      :path: HumanName.period
+      :type: Period
+      :kind: :complex_type
+      :requied: false
+      :collection: false
+      :columns:
+        :start:
+          :name: start
+          :path: HumanName.period.start
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+        :end:
+          :name: end
+          :path: HumanName.period.end
+          :type: dateTime
+          :kind: :primitive
+          :requied: false
+          :collection: false
+  :referenced_by: *4

@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'active_support/core_ext'
+require 'dt'
 
 module Sch
   def m
@@ -28,43 +29,44 @@ module Sch
     {
       table: table_name(path),
       columns: collect_columns(path, els),
-      referenced_by: collect_references(path, els),
-      embeds: collect_embeded_types(path, els),
-      custom_types: collect_custom_types(path, els),
+      referenced_by: collect_references(path, els)
     }
   end
 
-  def collect_custom_types(parent_name, els)
-    direct_children(parent_name, els) do |el|
-      next unless m.compound_type?(el)
-      next if m.collection?(el)
-      attrs(el, els)
+  def collect_meta_for_complex_type(path, type)
+    Dt.mount(path, type)
+  end
+
+  def complex_type_columns(path, ct_el)
+    ct_el.xpath('.//element').map do |el|
+      name = el[:name]
+      {
+        name: name,
+        path: "#{path}.#{name}"
+      }
     end
   end
 
   def collect_references(parent_name, els)
+    res = {}
     direct_children(parent_name, els) do |el|
       next unless m.compound_type?(el)
       next unless m.collection?(el)
-      attrs(el, els)
+      at = attrs(el, els)
+      res[at[:name].to_sym] = at
     end
+    res
   end
 
   def collect_columns(parent_name, els)
+    res = {}
     direct_children(parent_name, els) do |el|
-      next unless m.primitive?(el)
-      attrs(el, els)
+      next unless m.primitive?(el) || ( !m.collection?(el) && m.compound_type?(el))
+      at = attrs(el, els)
+      res[at[:name].to_sym] = at
     end
+    res
   end
-
-  def collect_embeded_types(parent_name, els)
-    direct_children(parent_name, els) do |el|
-      next if m.collection?(el)
-      next unless m.compound_type?(el)
-      attrs(el, els)
-    end
-  end
-
 
   def el_name(el)
     Gen::Meta.path(el).split('.').last.gsub('[x]','').underscore
@@ -77,7 +79,6 @@ module Sch
     end.compact
   end
 
-
   def attrs(el, els)
     attrs = {
       name: el_name(el),
@@ -88,7 +89,10 @@ module Sch
     attrs[:collection] = true if m.collection?(el)
     type = m.union_type?(el) ? m.types(el) : m.types(el).first
     attrs[:type] = type if type.present?
-    if m.compound_type?(el)
+    case m.kind(el)
+    when :complex_type
+      attrs.merge! collect_meta_for_complex_type(m.path(el), m.type(el))
+    when :nested_type
       attrs.merge! collect_meta(m.path(el), els)
     end
     attrs
