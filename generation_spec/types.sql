@@ -25,6 +25,7 @@ CREATE TYPE fhir.document_reference_status AS ENUM ('current','error','supercede
 CREATE TYPE fhir.observation_status AS ENUM ('amended','cancelled','final','interim','registered','withdrawn');
 
 CREATE TYPE fhir.value_set_status AS ENUM ('active','draft','retired');
+
 create type fhir.resource_reference AS (
   reference uuid,
   display varchar
@@ -37,15 +38,7 @@ CREATE TYPE fhir.quantity AS (
   "system" varchar,
   "code" varchar
 );
-CREATE TYPE fhir.xml_id_ref AS (
 
-);
-CREATE TYPE fhir.resource_type AS (
-
-);
-CREATE TYPE fhir.sampled_data_data_type AS (
-
-);
 CREATE TYPE fhir.element AS (
 
 );
@@ -67,12 +60,10 @@ CREATE TYPE fhir.coding AS (
 "version" varchar,
 "code" varchar,
 "display" varchar,
-"primary" varchar,
-"value_set" fhir.resource_reference
+"primary" varchar
 );
 CREATE TYPE fhir.range AS (
-"low" fhir.quantity,
-"high" fhir.quantity
+
 );
 CREATE TYPE fhir.attachment AS (
 "content_type" varchar,
@@ -84,19 +75,18 @@ CREATE TYPE fhir.attachment AS (
 "title" varchar
 );
 CREATE TYPE fhir.ratio AS (
-"numerator" fhir.quantity,
-"denominator" fhir.quantity
+
 );
 CREATE TYPE fhir.sampled_data AS (
-"origin" fhir.quantity,
 "period" varchar,
 "factor" varchar,
 "lower_limit" varchar,
 "upper_limit" varchar,
 "dimensions" varchar,
-"data" fhir.sampled_data_data_type
+"data" varchar
 );
 CREATE TYPE fhir.codeable_concept AS (
+"coding" fhir.coding[],
 "text" varchar
 );
 CREATE TYPE fhir.identifier AS (
@@ -104,8 +94,7 @@ CREATE TYPE fhir.identifier AS (
 "label" varchar,
 "system" varchar,
 "value" varchar,
-"period" fhir.period,
-"assigner" fhir.resource_reference
+"period" fhir.period
 );
 CREATE TYPE fhir.age AS (
 "value" varchar,
@@ -146,6 +135,7 @@ CREATE TYPE fhir.schedule_repeat AS (
 "end" varchar
 );
 CREATE TYPE fhir.schedule AS (
+"event" fhir.period[],
 "repeat" fhir.schedule_repeat
 );
 CREATE TYPE fhir.contact AS (
@@ -157,6 +147,7 @@ CREATE TYPE fhir.contact AS (
 CREATE TYPE fhir.address AS (
 "use" fhir.address_use,
 "text" varchar,
+"line" varchar[],
 "city" varchar,
 "state" varchar,
 "zip" varchar,
@@ -166,6 +157,10 @@ CREATE TYPE fhir.address AS (
 CREATE TYPE fhir.human_name AS (
 "use" fhir.name_use,
 "text" varchar,
+"family" varchar[],
+"given" varchar[],
+"prefix" varchar[],
+"suffix" varchar[],
 "period" fhir.period
 );
 --}}}

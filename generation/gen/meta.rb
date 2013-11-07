@@ -1,11 +1,17 @@
+require 'dt'
 module Gen::Meta
+  def nname(name)
+    name.to_s
+    .underscore
+  end
+
   def type(el)
-    el.xpath("./definition/type/code").first.try(:[], :value).presence
+    types(el).first
   end
 
   def types(el)
     el.xpath("./definition/type/code").map do |c|
-      c[:value]
+      nname(c[:value])
     end.compact
   end
 
@@ -14,11 +20,12 @@ module Gen::Meta
   end
 
   def path(el)
-    el.xpath("./path").first.try(:[], :value)
+    p = el.xpath("./path").first.try(:[], :value)
+    p.underscore if p
   end
 
   def resource_ref?(el)
-    type(el).match(/^Resource\(/)
+    type(el).match(/^resource\(/)
   end
 
   def technical?(el)
@@ -38,8 +45,7 @@ module Gen::Meta
   end
 
   def primitive?(el)
-    types = types(el)
-    Gen::Db.datatypes["#{types.first}-primitive"]
+    Dt.primitives[type(el)]
   end
 
   def kind(el)
@@ -53,7 +59,7 @@ module Gen::Meta
 
   def direct_parent?(ppath, el)
     path = path(el)
-    path.start_with?(ppath) && (path.split('.') - ppath.split('.')).size == 1
+    path.underscore.start_with?(ppath.underscore) && (path.split('.') - ppath.split('.')).size == 1
   end
 
   def attributes(db, path)

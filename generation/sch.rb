@@ -3,6 +3,11 @@ require 'active_support/core_ext'
 require 'dt'
 
 module Sch
+  def nname(name)
+    name.to_s
+    .underscore
+  end
+
   def m
     Gen::Meta
   end
@@ -12,7 +17,7 @@ module Sch
   end
 
   def resource_name(el)
-    el.xpath('./type').first[:value]
+    nname(el.xpath('./type').first[:value])
   end
 
   def table_name(path)
@@ -48,24 +53,20 @@ module Sch
   end
 
   def collect_references(parent_name, els)
-    res = {}
-    direct_children(parent_name, els) do |el|
+    direct_children(parent_name, els) do |el, res|
       next unless m.compound_type?(el)
       next unless m.collection?(el)
       at = attrs(el, els)
       res[at[:name].to_sym] = at
     end
-    res
   end
 
   def collect_columns(parent_name, els)
-    res = {}
-    direct_children(parent_name, els) do |el|
+    direct_children(parent_name, els) do |el, res|
       next unless m.primitive?(el) || ( !m.collection?(el) && m.compound_type?(el))
       at = attrs(el, els)
-      res[at[:name].to_sym] = at
+      res[nname(at[:name]).to_sym] = at
     end
-    res
   end
 
   def el_name(el)
@@ -73,10 +74,13 @@ module Sch
   end
 
   def direct_children(parent_name, els)
-    els.select{|el| m.direct_parent?(parent_name, el) && !m.technical?(el)}
-    .map do |el|
-      yield el
-    end.compact
+    {}.tap do |res|
+      els.select do |el|
+        m.direct_parent?(parent_name, el) && !m.technical?(el)
+      end.each do |el|
+        yield el, res
+      end
+    end
   end
 
   def attrs(el, els)

@@ -19,10 +19,7 @@ describe Gen do
     meta =  Sch.meta(struct)
 
     meta[:table].should == 'patients'
-    # puts meta.to_yaml
-
     meta[:columns].should_not be_empty
-    puts meta.to_yaml
 
     bd_col = meta[:columns][:birth_date]
     bd_col.should be_present
@@ -32,7 +29,7 @@ describe Gen do
     #todo may be this should go to embeds
     ms_col = meta[:columns][:marital_status]
     ms_col[:kind].should == :complex_type
-    ms_col[:type].should == 'CodeableConcept'
+    ms_col[:type].should == 'codeable_concept'
 
     meta[:referenced_by].should_not be_empty
     cnt =  meta[:referenced_by][:contact]
@@ -41,10 +38,15 @@ describe Gen do
     cnt[:kind].should == :nested_type
 
     cn = cnt[:columns][:name]
-    cn[:type].should == 'HumanName'
-    cn[:path].should == 'Patient.contact.name'
-    cn[:columns][:period][:path].should == 'Patient.contact.name.period'
-    meta[:referenced_by][:address][:columns][:city][:path].should == 'Patient.address.city'
+    cn[:type].should == 'human_name'
+    cn[:path].should == 'patient.contact.name'
+    cn[:columns][:period][:path].should == 'patient.contact.name.period'
+    meta[:referenced_by][:address][:columns][:city][:path].should == 'patient.address.city'
+
+
+    name = meta[:referenced_by][:name]
+    name[:columns][:family].should_not be_nil
+    fwrite('meta', meta.to_yaml)
   end
 
   example do
@@ -67,18 +69,5 @@ describe Gen do
     content,
     "--}}}"
     ].join("\n")
-  end
-
-
-  example do
-    # puts generate_types.to_yaml
-    sql = ''
-    sql<< "drop schema if exists fhir cascade;\n"
-    sql<< "create schema fhir;\n"
-    sql<< sg.generate_enums
-    sql<< sg.base_types
-    sql<< sg.generate_complex_types
-    fwrite('types', wrap_sql(sql))
-    DB.execute sql
   end
 end

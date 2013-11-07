@@ -19,26 +19,36 @@ module SqlGen
     SCHEMA + '.' + name.gsub('.','_').underscore
   end
 
+  def generate_types
+    [
+      generate_enums,
+      base_types,
+      generate_complex_types
+    ].join("\n")
+  end
+
   def generate_enums
-    Dt.enums.map do |name, enum|
+    Dt.types.map do |name, enum|
+      next unless enum[:kind] == :enum
       <<-SQL
 CREATE TYPE #{type_name(name)} AS ENUM (#{enum[:options].map{|o| "'#{o}'"}.join(',')});
       SQL
-    end.join("\n")
+    end.compact.join("\n")
   end
 
   def generate_attribute(col_name, col)
     name = attribute_name(col_name)
+    array = col[:collection] ? '[]' : ''
     if [:enum, :complex_type].include?(col[:kind])
-      %Q["#{name}" fhir.#{column_type(col)}]
+      %Q["#{name}" fhir.#{column_type(col)}#{array}]
     else
-      %Q["#{name}" #{column_type(col)}]
+      %Q["#{name}" #{column_type(col)}#{array}]
     end
   end
 
   def generate_attributes(name, tp)
-    tp[:columns].map do |col_name, col|
-      next unless col_name
+    tp[:attrs].map do |col_name, col|
+      next unless col_name.present?
       next if skip_attribute?(col_name, col)
       generate_attribute(col_name, col)
     end.compact.join(",\n")
@@ -51,12 +61,13 @@ CREATE TYPE #{type_name(name)} AS ENUM (#{enum[:options].map{|o| "'#{o}'"}.join(
     .underscore
   end
 
-  def skip_type?(name, tp)
+  def skip_type?(name)
     return true if ['quantity','resource_reference', 'resource', 'extension'].include?(name.to_s.underscore)
   end
 
   def skip_attribute?(name, el)
     return true if attribute_name(el[:path]) =~ /_comparator$/
+    return true if skip_type?(el[:type])
   end
 
   def base_types
@@ -77,14 +88,12 @@ CREATE TYPE #{SCHEMA}.quantity AS (
   end
 
   def generate_complex_types
-    cts = Dt.complex_types
-    puts complex_type_tsorted
     complex_type_tsorted.map do |name|
-      tp = cts[name]
-      next unless tp
-      next if skip_type?(name, tp)
-      next unless tp[:kind] == :complex_type
       next unless name.present?
+      tp = Dt.types[name]
+      next unless tp
+      next unless tp[:kind] == :complex_type
+      next if skip_type?(name)
 
       %Q[CREATE TYPE #{type_name(name)} AS (\n#{generate_attributes(name, tp)}\n);]
     end.compact.join("\n")
@@ -99,12 +108,14 @@ CREATE TYPE #{SCHEMA}.quantity AS (
   end
 
   def complex_type_tsorted
-    Dt.complex_types
+    Dt.types
     .each_with_object(THash.new) do |(name, tp), acc|
-      acc[name.underscore] = tp[:columns]
+      next unless tp[:kind] == :complex_type
+
+      acc[name.underscore] = tp[:attrs]
       .values
-      .select {|t| t[:kind] == :complex_type}
-      .map{|t| t[:path].underscore}
+      .select {|t| t[:kind] == :complex_type }
+      .map{|t| t[:path] }
     end.tsort
   end
 
@@ -121,7 +132,7 @@ CREATE TYPE #{SCHEMA}.quantity AS (
     sql = <<-SQL
 create table #{attribute_name(meta[:path] || meta[:name] || 'ups').pluralize} (
 id uuid PRIMARY KEY default uuid_generate_v4(),
-    #{generate_attributes(meta[:name],meta)}
+    #{generate_attributes(meta[:name], meta)}
 );
     SQL
 
