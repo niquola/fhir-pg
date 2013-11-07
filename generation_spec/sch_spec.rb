@@ -1,8 +1,17 @@
 require_relative 'gen_spec_helper'
 require 'sch'
+require 'sql_gen'
+require 'sequel'
+
+DB = Sequel.postgres('test', user: 'nicola')
+SCHEMA = 'fhir'
 
 describe Gen do
   include described_class
+
+  def sg
+    SqlGen
+  end
 
   example do
     struct = Sch.load_profile('pt')
@@ -35,5 +44,41 @@ describe Gen do
     cn[:type].should == 'HumanName'
     cn[:path].should == 'Patient.contact.name'
     cn[:columns][:period][:path].should == 'Patient.contact.name.period'
+    meta[:referenced_by][:address][:columns][:city][:path].should == 'Patient.address.city'
+  end
+
+  example do
+    struct = Sch.load_profile('pt')
+    meta =  Sch.meta(struct)
+    sql =  sg.generate_sql(meta)
+    fwrite('sch', wrap_sql(sql))
+    DB.execute(sql)
+  end
+
+  def fwrite(file_name, content)
+    open(File.dirname(__FILE__) + "/#{file_name}.sql", 'w')do |f|
+      f<< content
+    end
+  end
+
+  def wrap_sql(content)
+    ["-- db:test",
+     "--{{{",
+    content,
+    "--}}}"
+    ].join("\n")
+  end
+
+
+  example do
+    # puts generate_types.to_yaml
+    sql = ''
+    sql<< "drop schema if exists fhir cascade;\n"
+    sql<< "create schema fhir;\n"
+    sql<< sg.generate_enums
+    sql<< sg.base_types
+    sql<< sg.generate_complex_types
+    fwrite('types', wrap_sql(sql))
+    DB.execute sql
   end
 end

@@ -2,6 +2,11 @@ require 'nokogiri'
 require 'active_support/core_ext'
 
 module Dt
+  def nname(name)
+    name.to_s
+    .underscore
+  end
+
   def datatypes_doc
     @datatypes_doc = Gen::Db.parse_doc(Gen::Pth.from_root_path("vendor/fhir-base.xsd"))
   end
@@ -9,11 +14,11 @@ module Dt
   def datatypes
     @datatypes ||= {}.tap do |res|
       datatypes_doc.xpath('//simpleType').each do |el|
-        res[el[:name]] = el
+        res[nname(el[:name])] = el
       end
 
       datatypes_doc.xpath('//complexType').each do |el|
-        res[el[:name]]= el
+        res[nname(el[:name])]= el
       end
     end
   end
@@ -25,23 +30,25 @@ module Dt
   def mount(path, type)
     types[type].dup.tap do |t|
       t[:path] = path
-      (t[:columns] || {}).each do |_,col|
-        mount_recur(path, col)
-      end
-      (t[:referenced_by] || {}).each do |_,col|
-        mount_recur(path, col)
-      end
+      mount_cols(path, t, :columns)
+      mount_cols(path, t, :referenced_by)
+    end
+  end
+
+  def mount_cols(path, t, what)
+    return unless t[what]
+    t[what] = t[what]
+    .each_with_object({}) do |(name,col), acc|
+      acc[nname(name)] = mount_recur(path, col.dup)
     end
   end
 
   def mount_recur(ppath, el)
-    path = "#{ppath}.#{el[:name]}"
-    el[:path] = path
-    (el[:columns] || []).each do |name, col|
-      mount_recur(path, col)
-    end
-    (el[:referenced_by] || []).each do |name, col|
-      mount_recur(path, col)
+    el.dup.tap do |new_el|
+      path = "#{ppath}.#{nname(el[:name])}"
+      new_el[:path] = path
+      mount_cols(path, new_el, :columns)
+      mount_cols(path, new_el, :referenced_by)
     end
   end
 
@@ -56,16 +63,16 @@ module Dt
 
   def primitives_els
     @primitives = datatypes.each_with_object({}) do |(name,el),acc|
-      if name =~ /-primitive$/
-        acc[name.gsub('-primitive','')] = el
+      if name =~ /_primitive$/
+        acc[name.gsub('_primitive','')] = el
       end
     end
   end
 
   def enums
     enums_els.each_with_object({}) do |(name,el), acc|
-      acc[name] = {
-        type: name,
+      acc[nname(name)] = {
+        type: nname(name),
         kind: :enum,
         options: el.xpath('.//enumeration').map{|n| n[:value]}.compact.sort
       }
@@ -74,8 +81,8 @@ module Dt
 
   def enums_els
     @enums = datatypes.each_with_object({}) do |(name,el),acc|
-      if name =~ /-list$/
-        acc[name.gsub('-list','')] = el
+      if name =~ /_list$/
+        acc[name.gsub('_list','')] = el
       end
     end
   end
@@ -89,7 +96,7 @@ module Dt
                              columns: collect_columns(name, el),
                            }
                            refs = collect_refs(name, el)
-                           acc[name][:referenced_by] = refs unless refs.empty? 
+                           acc[name][:referenced_by] = refs unless refs.empty?
                          end
                          expand_complex_types(cts)
                        end
@@ -116,13 +123,13 @@ module Dt
   def expand_recursive(col, cts, what)
     return unless col[:kind] == :complex_type
     return unless col[:type].present?
-    attrs = cts[col[:type]].dup
+    attrs = cts[nname(col[:type])].dup
     return unless attrs.present?
     return unless attrs[what].present?
     attrs[what] = attrs[what]
     .each_with_object({}) do |(name, scol), acc|
       at = scol.dup
-      at[:path] = "#{col[:path]}.#{scol[:name]}"
+      at[:path] = "#{col[:path]}.#{nname(scol[:name])}"
         acc[name] = at
     end
     col.reverse_merge!(attrs)
@@ -134,8 +141,8 @@ module Dt
   def complex_types_els
     @compound_types = datatypes.each_with_object({}) do |(name,el),acc|
       next unless name
-      next if name =~ /-primitive$/
-      next if name =~ /-list$/
+      next if name =~ /_primitive$/
+      next if name =~ /_list$/
       next if primitives.key?(name)
       next if enums.key?(name)
       acc[name] = el
@@ -158,8 +165,8 @@ module Dt
   end
 
   def build_column(parent_name, el)
-    name = el[:name]
-    type = el[:type]
+    name = nname(el[:name])
+    type = nname(el[:type])
     kind = kind(type)
     {
       name: name,
