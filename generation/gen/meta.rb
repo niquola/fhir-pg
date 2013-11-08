@@ -20,8 +20,8 @@ module Gen::Meta
   end
 
   def path(el)
-    p = el.xpath("./path").first.try(:[], :value)
-    p.underscore if p
+    pth = el.xpath("./path").first.try(:[], :value)
+    pth.underscore if pth
   end
 
   def resource_ref?(el)
@@ -44,17 +44,14 @@ module Gen::Meta
     attr(el, 'min') == '1'
   end
 
-  def primitive?(el)
-    Dt.primitives[type(el)]
-  end
-
   def kind(el)
     types = types(el)
     return :nested_type if types.empty?
     return :polimorphic if union_type?(el)
     return :resource_ref  if resource_ref?(el)
-    return :primitive   if primitive?(el)
-    :complex_type
+    tp =  Dt.types[type(el)]
+    return tp[:kind]   if tp && tp[:kind]
+    raise "Ups what kind is #{el.inspect}?"
   end
 
   def direct_parent?(ppath, el)

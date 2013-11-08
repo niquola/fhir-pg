@@ -1,0 +1,871 @@
+---
+:name: patient
+:path: patient
+:attrs:
+  :narrative:
+    :name: narrative
+    :path: patient.text
+    :kind: :complex_type
+    :type: narrative
+    :options: []
+    :attrs:
+      :status:
+        :name: status
+        :path: patient.text.status
+        :type: narrative_status
+        :requied: true
+        :collection: false
+        :kind: :enum
+      ! ':':
+        :name: ''
+        :path: patient.text.
+        :type: ''
+        :requied: true
+        :collection: false
+        :kind: :primitive
+  :identifier:
+    :name: identifier
+    :path: patient.identifier
+    :kind: :complex_type
+    :collection: true
+    :type: identifier
+    :options: []
+    :attrs:
+      :use:
+        :name: use
+        :path: patient.identifier.use
+        :type: identifier_use
+        :requied: false
+        :collection: false
+        :kind: :enum
+      :label:
+        :name: label
+        :path: patient.identifier.label
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :system:
+        :name: system
+        :path: patient.identifier.system
+        :type: uri
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :value:
+        :name: value
+        :path: patient.identifier.value
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :period:
+        :name: period
+        :path: patient.identifier.period
+        :type: period
+        :requied: false
+        :collection: false
+        :kind: :complex_type
+        :attrs:
+          :start:
+            :name: start
+            :path: patient.identifier.period.start
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :end:
+            :name: end
+            :path: patient.identifier.period.end
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+      :assigner:
+        :name: assigner
+        :path: patient.identifier.assigner
+        :type: resource_reference
+        :requied: false
+        :collection: false
+        :kind: :complex_type
+        :attrs:
+          :reference:
+            :name: reference
+            :path: patient.identifier.assigner.reference
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :display:
+            :name: display
+            :path: patient.identifier.assigner.display
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+  :human_name:
+    :name: human_name
+    :path: patient.name
+    :kind: :complex_type
+    :collection: true
+    :type: human_name
+    :options: &2 []
+    :attrs:
+      :use:
+        :name: use
+        :path: patient.name.use
+        :type: name_use
+        :requied: false
+        :collection: false
+        :kind: :enum
+      :text:
+        :name: text
+        :path: patient.name.text
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :family:
+        :name: family
+        :path: patient.name.family
+        :type: string
+        :requied: false
+        :collection: true
+        :kind: :primitive
+      :given:
+        :name: given
+        :path: patient.name.given
+        :type: string
+        :requied: false
+        :collection: true
+        :kind: :primitive
+      :prefix:
+        :name: prefix
+        :path: patient.name.prefix
+        :type: string
+        :requied: false
+        :collection: true
+        :kind: :primitive
+      :suffix:
+        :name: suffix
+        :path: patient.name.suffix
+        :type: string
+        :requied: false
+        :collection: true
+        :kind: :primitive
+      :period:
+        :name: period
+        :path: patient.name.period
+        :type: period
+        :requied: false
+        :collection: false
+        :kind: :complex_type
+        :attrs:
+          :start:
+            :name: start
+            :path: patient.name.period.start
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :end:
+            :name: end
+            :path: patient.name.period.end
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+  :contact:
+    :name: contact
+    :path: patient.telecom
+    :kind: :complex_type
+    :collection: true
+    :type: contact
+    :options: &3 []
+    :attrs:
+      :system:
+        :name: system
+        :path: patient.telecom.system
+        :type: contact_system
+        :requied: false
+        :collection: false
+        :kind: :enum
+      :value:
+        :name: value
+        :path: patient.telecom.value
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :use:
+        :name: use
+        :path: patient.telecom.use
+        :type: contact_use
+        :requied: false
+        :collection: false
+        :kind: :enum
+      :period:
+        :name: period
+        :path: patient.telecom.period
+        :type: period
+        :requied: false
+        :collection: false
+        :kind: :complex_type
+        :attrs:
+          :start:
+            :name: start
+            :path: patient.telecom.period.start
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :end:
+            :name: end
+            :path: patient.telecom.period.end
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+  :codeable_concept:
+    :name: codeable_concept
+    :path: patient.communication
+    :kind: :complex_type
+    :collection: true
+    :type: codeable_concept
+    :options: &1 []
+    :attrs:
+      :coding:
+        :name: coding
+        :path: patient.communication.coding
+        :type: coding
+        :requied: false
+        :collection: true
+        :kind: :complex_type
+        :attrs:
+          :system:
+            :name: system
+            :path: patient.communication.coding.system
+            :type: uri
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :version:
+            :name: version
+            :path: patient.communication.coding.version
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :code:
+            :name: code
+            :path: patient.communication.coding.code
+            :type: code
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :display:
+            :name: display
+            :path: patient.communication.coding.display
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :primary:
+            :name: primary
+            :path: patient.communication.coding.primary
+            :type: boolean
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :value_set:
+            :name: value_set
+            :path: patient.communication.coding.value_set
+            :type: resource_reference
+            :requied: false
+            :collection: false
+            :kind: :complex_type
+            :attrs:
+              :reference:
+                :name: reference
+                :path: patient.communication.coding.value_set.reference
+                :type: string
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :display:
+                :name: display
+                :path: patient.communication.coding.value_set.display
+                :type: string
+                :requied: false
+                :collection: false
+                :kind: :primitive
+      :text:
+        :name: text
+        :path: patient.communication.text
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+  :birth_date:
+    :name: birth_date
+    :path: patient.birth_date
+    :kind: :primitive
+    :type: date_time
+  :deceased:
+    :name: deceased
+    :path: patient.deceased[x]
+    :kind: :polimorphic
+    :type:
+    - boolean
+    - date_time
+  :address:
+    :name: address
+    :path: patient.address
+    :kind: :complex_type
+    :collection: true
+    :type: address
+    :options: &4 []
+    :attrs:
+      :use:
+        :name: use
+        :path: patient.address.use
+        :type: address_use
+        :requied: false
+        :collection: false
+        :kind: :enum
+      :text:
+        :name: text
+        :path: patient.address.text
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :line:
+        :name: line
+        :path: patient.address.line
+        :type: string
+        :requied: false
+        :collection: true
+        :kind: :primitive
+      :city:
+        :name: city
+        :path: patient.address.city
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :state:
+        :name: state
+        :path: patient.address.state
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :zip:
+        :name: zip
+        :path: patient.address.zip
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :country:
+        :name: country
+        :path: patient.address.country
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :period:
+        :name: period
+        :path: patient.address.period
+        :type: period
+        :requied: false
+        :collection: false
+        :kind: :complex_type
+        :attrs:
+          :start:
+            :name: start
+            :path: patient.address.period.start
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :end:
+            :name: end
+            :path: patient.address.period.end
+            :type: date_time
+            :requied: false
+            :collection: false
+            :kind: :primitive
+  :multiple_birth:
+    :name: multiple_birth
+    :path: patient.multiple_birth[x]
+    :kind: :polimorphic
+    :type:
+    - boolean
+    - integer
+  :attachment:
+    :name: attachment
+    :path: patient.photo
+    :kind: :complex_type
+    :collection: true
+    :type: attachment
+    :options: []
+    :attrs:
+      :content_type:
+        :name: content_type
+        :path: patient.photo.content_type
+        :type: code
+        :requied: true
+        :collection: false
+        :kind: :primitive
+      :language:
+        :name: language
+        :path: patient.photo.language
+        :type: code
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :data:
+        :name: data
+        :path: patient.photo.data
+        :type: base64_binary
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :url:
+        :name: url
+        :path: patient.photo.url
+        :type: uri
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :size:
+        :name: size
+        :path: patient.photo.size
+        :type: integer
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :hash:
+        :name: hash
+        :path: patient.photo.hash
+        :type: base64_binary
+        :requied: false
+        :collection: false
+        :kind: :primitive
+      :title:
+        :name: title
+        :path: patient.photo.title
+        :type: string
+        :requied: false
+        :collection: false
+        :kind: :primitive
+  :patient.contact:
+    :name: patient.contact
+    :path: patient.contact
+    :kind: :nested_type
+    :collection: true
+    :attrs:
+      :codeable_concept:
+        :name: codeable_concept
+        :path: patient.contact.gender
+        :kind: :complex_type
+        :type: codeable_concept
+        :options: *1
+        :attrs:
+          :coding:
+            :name: coding
+            :path: patient.contact.gender.coding
+            :type: coding
+            :requied: false
+            :collection: true
+            :kind: :complex_type
+            :attrs:
+              :system:
+                :name: system
+                :path: patient.contact.gender.coding.system
+                :type: uri
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :version:
+                :name: version
+                :path: patient.contact.gender.coding.version
+                :type: string
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :code:
+                :name: code
+                :path: patient.contact.gender.coding.code
+                :type: code
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :display:
+                :name: display
+                :path: patient.contact.gender.coding.display
+                :type: string
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :primary:
+                :name: primary
+                :path: patient.contact.gender.coding.primary
+                :type: boolean
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :value_set:
+                :name: value_set
+                :path: patient.contact.gender.coding.value_set
+                :type: resource_reference
+                :requied: false
+                :collection: false
+                :kind: :complex_type
+                :attrs:
+                  :reference:
+                    :name: reference
+                    :path: patient.contact.gender.coding.value_set.reference
+                    :type: string
+                    :requied: false
+                    :collection: false
+                    :kind: :primitive
+                  :display:
+                    :name: display
+                    :path: patient.contact.gender.coding.value_set.display
+                    :type: string
+                    :requied: false
+                    :collection: false
+                    :kind: :primitive
+          :text:
+            :name: text
+            :path: patient.contact.gender.text
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+      :human_name:
+        :name: human_name
+        :path: patient.contact.name
+        :kind: :complex_type
+        :type: human_name
+        :options: *2
+        :attrs:
+          :use:
+            :name: use
+            :path: patient.contact.name.use
+            :type: name_use
+            :requied: false
+            :collection: false
+            :kind: :enum
+          :text:
+            :name: text
+            :path: patient.contact.name.text
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :family:
+            :name: family
+            :path: patient.contact.name.family
+            :type: string
+            :requied: false
+            :collection: true
+            :kind: :primitive
+          :given:
+            :name: given
+            :path: patient.contact.name.given
+            :type: string
+            :requied: false
+            :collection: true
+            :kind: :primitive
+          :prefix:
+            :name: prefix
+            :path: patient.contact.name.prefix
+            :type: string
+            :requied: false
+            :collection: true
+            :kind: :primitive
+          :suffix:
+            :name: suffix
+            :path: patient.contact.name.suffix
+            :type: string
+            :requied: false
+            :collection: true
+            :kind: :primitive
+          :period:
+            :name: period
+            :path: patient.contact.name.period
+            :type: period
+            :requied: false
+            :collection: false
+            :kind: :complex_type
+            :attrs:
+              :start:
+                :name: start
+                :path: patient.contact.name.period.start
+                :type: date_time
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :end:
+                :name: end
+                :path: patient.contact.name.period.end
+                :type: date_time
+                :requied: false
+                :collection: false
+                :kind: :primitive
+      :contact:
+        :name: contact
+        :path: patient.contact.telecom
+        :kind: :complex_type
+        :collection: true
+        :type: contact
+        :options: *3
+        :attrs:
+          :system:
+            :name: system
+            :path: patient.contact.telecom.system
+            :type: contact_system
+            :requied: false
+            :collection: false
+            :kind: :enum
+          :value:
+            :name: value
+            :path: patient.contact.telecom.value
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :use:
+            :name: use
+            :path: patient.contact.telecom.use
+            :type: contact_use
+            :requied: false
+            :collection: false
+            :kind: :enum
+          :period:
+            :name: period
+            :path: patient.contact.telecom.period
+            :type: period
+            :requied: false
+            :collection: false
+            :kind: :complex_type
+            :attrs:
+              :start:
+                :name: start
+                :path: patient.contact.telecom.period.start
+                :type: date_time
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :end:
+                :name: end
+                :path: patient.contact.telecom.period.end
+                :type: date_time
+                :requied: false
+                :collection: false
+                :kind: :primitive
+      :address:
+        :name: address
+        :path: patient.contact.address
+        :kind: :complex_type
+        :type: address
+        :options: *4
+        :attrs:
+          :use:
+            :name: use
+            :path: patient.contact.address.use
+            :type: address_use
+            :requied: false
+            :collection: false
+            :kind: :enum
+          :text:
+            :name: text
+            :path: patient.contact.address.text
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :line:
+            :name: line
+            :path: patient.contact.address.line
+            :type: string
+            :requied: false
+            :collection: true
+            :kind: :primitive
+          :city:
+            :name: city
+            :path: patient.contact.address.city
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :state:
+            :name: state
+            :path: patient.contact.address.state
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :zip:
+            :name: zip
+            :path: patient.contact.address.zip
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :country:
+            :name: country
+            :path: patient.contact.address.country
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+          :period:
+            :name: period
+            :path: patient.contact.address.period
+            :type: period
+            :requied: false
+            :collection: false
+            :kind: :complex_type
+            :attrs:
+              :start:
+                :name: start
+                :path: patient.contact.address.period.start
+                :type: date_time
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :end:
+                :name: end
+                :path: patient.contact.address.period.end
+                :type: date_time
+                :requied: false
+                :collection: false
+                :kind: :primitive
+      :organization:
+        :name: organization
+        :path: patient.contact.organization
+        :kind: :resource_ref
+        :type: resource(organization)
+  :patient.animal:
+    :name: patient.animal
+    :path: patient.animal
+    :kind: :nested_type
+    :attrs:
+      :codeable_concept:
+        :name: codeable_concept
+        :path: patient.animal.gender_status
+        :kind: :complex_type
+        :type: codeable_concept
+        :options: *1
+        :attrs:
+          :coding:
+            :name: coding
+            :path: patient.animal.gender_status.coding
+            :type: coding
+            :requied: false
+            :collection: true
+            :kind: :complex_type
+            :attrs:
+              :system:
+                :name: system
+                :path: patient.animal.gender_status.coding.system
+                :type: uri
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :version:
+                :name: version
+                :path: patient.animal.gender_status.coding.version
+                :type: string
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :code:
+                :name: code
+                :path: patient.animal.gender_status.coding.code
+                :type: code
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :display:
+                :name: display
+                :path: patient.animal.gender_status.coding.display
+                :type: string
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :primary:
+                :name: primary
+                :path: patient.animal.gender_status.coding.primary
+                :type: boolean
+                :requied: false
+                :collection: false
+                :kind: :primitive
+              :value_set:
+                :name: value_set
+                :path: patient.animal.gender_status.coding.value_set
+                :type: resource_reference
+                :requied: false
+                :collection: false
+                :kind: :complex_type
+                :attrs:
+                  :reference:
+                    :name: reference
+                    :path: patient.animal.gender_status.coding.value_set.reference
+                    :type: string
+                    :requied: false
+                    :collection: false
+                    :kind: :primitive
+                  :display:
+                    :name: display
+                    :path: patient.animal.gender_status.coding.value_set.display
+                    :type: string
+                    :requied: false
+                    :collection: false
+                    :kind: :primitive
+          :text:
+            :name: text
+            :path: patient.animal.gender_status.text
+            :type: string
+            :requied: false
+            :collection: false
+            :kind: :primitive
+  :care_provider:
+    :name: care_provider
+    :path: patient.care_provider
+    :kind: :resource_ref
+    :collection: true
+    :type: resource(organization|practitioner)
+  :managing_organization:
+    :name: managing_organization
+    :path: patient.managing_organization
+    :kind: :resource_ref
+    :type: resource(organization)
+  :patient.link:
+    :name: patient.link
+    :path: patient.link
+    :kind: :nested_type
+    :collection: true
+    :attrs:
+      :other:
+        :name: other
+        :path: patient.link.other
+        :kind: :resource_ref
+        :required: true
+        :type: resource(patient)
+      :type:
+        :name: type
+        :path: patient.link.type
+        :kind: :primitive
+        :required: true
+        :type: code
+  :active:
+    :name: active
+    :path: patient.active
+    :kind: :primitive
+    :type: boolean
