@@ -59,38 +59,72 @@ describe Gen do
     DB.execute(sql)
   end
 
-  example do
-    struct = Sch.load_profile('pt')
-    meta =  Sch.meta(struct)
-    objs =  sg.generate(meta)
-    debug_file('schema.yaml', objs.to_yaml)
-    idx = objs
-    .each_with_object({}) do |t, a|
-      a[t[:name]] = t
+  describe "sql gen" do
+
+    before :all do
+      struct = Sch.load_profile('pt')
+      meta =  Sch.meta(struct)
+      objs =  sg.generate(meta)
+      debug_file('schema.yaml', objs.to_yaml)
+      @idx = objs.each_with_object({}) do |t, a|
+        a[t[:name]] = t
+      end
     end
 
-    pd = idx.fetch('patient_deceased')
-    pd[:sql].should == :type
-    pd[:columns]['type'].should_not be_nil
-    bv = pd[:columns]['boolean_value']
-    bv.should_not be_nil
+    def idx
+      @idx
+    end
 
-    pd = idx.fetch('patient_animal')
-    pd[:sql].should == :type
-    pd[:columns]['species'].should_not be_nil
+    example do
+      pd = idx.fetch('fhir.patient_deceaseds')
+      pd[:sql].should == :table
+      pd[:columns]['value_type'].should_not be_nil
+      bv = pd[:columns]['boolean_value']
+      bv.should_not be_nil
+    end
 
-    pt = idx['fhir.patients']
-    pt[:columns].should_not be_empty
-    bd = pt[:columns]['birth_date']
-    bd.should_not be_nil
-    bd[:type].should == 'time'
+    example do
+      pd = idx.fetch('fhir.patient_animals')
+      pd[:sql].should == :table
+      pd = idx.fetch('fhir.patient_animal_species')
+      pd.should_not be_nil
+    end
 
-    [
-      'patients',
-      'patient_names',
-      #'patient_matrial_status_codings'
-    ].each do |t|
-      idx['fhir.' + t].should_not be_nil
+    it "test embeded child tables"  do
+      bc = idx.fetch('fhir.patient_marital_status_codings')
+      bc[:sql].should == :table
+    end
+
+    example do
+      bc = idx.fetch('fhir.patient_marital_status_codings')
+      bc[:sql].should == :table
+      bc[:columns]['patient_id'].should_not be_nil
+      bc[:columns]['patient_id'][:sql].should == :ref
+    end
+
+    example do
+      bc = idx.fetch('fhir.patient_communication_codings')
+      bc[:sql].should == :table
+      bc[:columns]['patient_id'].should_not be_nil
+      bc[:columns]['patient_communication_id'].should_not be_nil
+    end
+
+    example do
+      pt = idx['fhir.patients']
+      pt[:columns].should_not be_empty
+      bd = pt[:columns]['birth_date']
+      bd.should_not be_nil
+      bd[:type].should == 'timestamp'
+    end
+
+    example do
+      [
+        'patients',
+        'patient_names',
+        'patient_marital_status_codings'
+      ].each do |t|
+        idx['fhir.' + t].should_not be_nil
+      end
     end
   end
 end

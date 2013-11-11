@@ -76,9 +76,10 @@ module Sch
   def attrs(el, els)
     types = m.types(el)
     type = types.size == 1 ? types.first : types
+    path = m.path(el).gsub('[x]','')
     attrs = {
       name: el_name(el),
-      path: m.path(el),
+      path: path,
       kind: m.kind(el),
       required: m.required?(el),
       collection:  m.collection?(el),
@@ -86,11 +87,39 @@ module Sch
     }
     case m.kind(el)
     when :complex_type
-      attrs.reverse_merge! collect_meta_for_complex_type(m.path(el), m.type(el))
+      attrs.reverse_merge! collect_meta_for_complex_type(path, m.type(el))
+    when :polimorphic
+      attrs.reverse_merge! collect_polimorphic(path, attrs)
     when :nested_type
-      attrs.reverse_merge! collect_meta(m.path(el), els)
+      attrs.reverse_merge! collect_meta(path, els)
     end
     attrs
+  end
+
+  def collect_polimorphic(path, attrs)
+    {
+      attrs: {
+        value_type: {
+          name: 'value_type',
+          path: "#{path.gsub('[x]','')}.value_type",
+          type: 'string',
+          kind: :primitive
+        }
+      }.merge(polimorphic_attrs(path, attrs[:type]))
+    }
+  end
+
+  def polimorphic_attrs(path, types)
+    types.each_with_object({}) do |t, acc|
+      t = t.gsub('[x]','')
+      name = "#{t}_value"
+      acc[name.to_sym] = {
+        name: name,
+        path: "#{path.gsub('[x]','')}.#{name}",
+        type: t,
+        kind: :primitive
+      }
+    end
   end
 
   extend self

@@ -23,8 +23,17 @@ module SqlGen
     def columns_to_sql(item)
       item[:columns].values.map do |col|
         arr = col[:array] ? '[]' : ''
-        [%Q["#{col[:name]}"], "#{col[:type]}#{arr}"].join(' ')
+        [%Q["#{col[:name]}"], "#{col[:type]}#{arr}", keys_sql(col)].compact.join(' ')
       end.join(",\n")
+    end
+
+    def keys_sql(col)
+      case col[:sql]
+      when :ref
+        "references #{col[:parent_table]}(id)"
+      when :pk
+        'primary key'
+      end
     end
 
     def type_to_sql(item)
@@ -47,19 +56,17 @@ module SqlGen
   end
 
   def generate(meta)
-    (generate_types + generate_tables(meta))
+    (generate_types + generate_tables(meta).flatten)
   end
 
   def generate_types
-    generate_enums +
-      base_types +
-      generate_complex_types
+    generate_enums # + base_types + generate_complex_types
   end
 
   def generate_tables(meta)
-    generate_table(meta) + child_tables(meta).map do |ref|
-      generate_tables(ref)
-    end.flatten
+    [generate_table(meta)] + collect_meta_for_tables_recur(meta, []).map do |m|
+      generate_table(m)
+    end
   end
 
   private
@@ -69,52 +76,53 @@ module SqlGen
   end
 
   def generate_table(meta)
-    table_only_types(meta)<< {
+    {
       sql: :table,
       name: table_name(meta),
-      columns: generate_attributes(meta[:name],meta)
+      collection: meta[:collection],
+      columns: primary_key(meta)
+      .merge(aggregate_key(meta))
+      .merge(parent_key(meta))
+      .merge(generate_attributes(meta[:name],meta))
     }
   end
 
-  def table_only_types(meta)
-    meta[:attrs].values.map do |tp|
-      next if tp[:collection]
-      next unless [:polimorphic, :nested_type].include?(tp[:kind])
-      name = attribute_name(tp[:path])
-      {
-        sql: :type,
-        name: name,
-        columns: case tp[:kind]
-                   when :polimorphic
-                     polimorphic_type_columns(tp)
-                   when :nested_type
-                     generate_attributes(tp[:name], tp)
-                   end
-      }
-    end.compact
+  def primary_key(meta)
+    { 'id' => {sql: :pk, name: 'id', type: 'uuid'}}
   end
 
-  def polimorphic_type_columns(tp)
-    { 'type' => { sql: :col, name: 'type', type: 'varchar' },
-      'value' => { sql: :col, name: 'value', type: 'varchar' } }
-    .tap do |res|
-      tp[:type].each do |t|
-        pt = primitive_type(t)
-        name = "#{pt}_value"
-        res[name] = {sql: :col, name: name, type: pt }
-      end
-    end
+  def parent_key(meta)
+    pth = meta[:path].split('.')
+    return {} if pth.size < 2
+    parent_table = pth[0..-2].join('_').underscore.pluralize
+    name = "#{parent_table.singularize}_id"
+    { name => {sql: :ref, name: name, type: 'uuid', parent_table: SCHEMA + '.' + parent_table}}
   end
 
-  def child_tables(meta)
-    meta[:attrs].values.select do |m|
-      [:complex_type, :nested_type].include?(m[:kind]) && m[:collection]
+  def aggregate_key(meta)
+    pth = meta[:path].split('.')
+    return {} if pth.size == 1
+    name = "#{pth.first.singularize}_id"
+    { name => {sql: :ref, name: name, type: 'uuid', parent_table: SCHEMA + '.' + pth.first.underscore.pluralize}}
+  end
+
+  def compound_type?(tp)
+    [:polimorphic, :nested_type, :complex_type].include?(tp[:kind])
+  end
+
+  def collect_meta_for_tables_recur(meta, acc)
+    (meta[:attrs] || {}).each do |name, m|
+      next unless compound_type?(m)
+      acc<< m
+      collect_meta_for_tables_recur(m, acc)
     end
+    acc
   end
 
   def columns(meta)
-    meta[:attrs].values.select do |m|
-      [:primitive, :enum].include?(m[:kind]) || ! m[:collection]
+    (meta[:attrs]  || {}).values.select do |m|
+      ! compound_type?(m)
+      #[:primitive, :enum].include?(m[:kind]) || ! m[:collection]
     end
   end
 
@@ -129,15 +137,13 @@ module SqlGen
     when :complex_type
       with_schema(attribute_name(col[:type]))
     when :polimorphic
-      attribute_name(col[:path])
+      with_schema(attribute_name(col[:path]))
     when :nested_type
-      attribute_name(col[:path])
+      with_schema(attribute_name(col[:path]))
     when :resource_ref
       'uuid'
     when :enum
       with_schema(col[:type])
-    when :polimorphic
-      col[:kind]
     else
       raise col.inspect
     end
@@ -187,71 +193,13 @@ module SqlGen
     return true if skip_type?(el[:type])
   end
 
-  def base_types
-    [
-      {
-        sql: :type,
-        name: "#{SCHEMA}.resource_reference",
-        columns: {
-          'reference' => {sql: :col, name: 'reference', type: 'uuid'},
-          'display' => {sql: :col, name: 'display', type: 'varchar'}
-        }
-      },
-      {
-        sql: :type,
-        name: "#{SCHEMA}.quantity",
-        columns: {
-          'reference'=> {sql: :col, name: 'reference', type: 'fhir.quantity_compararator'},
-          'units'=> {sql: :col, name: 'units', type: 'varchar'},
-          'system'=> {sql: :col, name: 'system', type: 'varchar'},
-          'type'=> {sql: :col, name: 'code', type: 'varchar'},
-        }
-      }
-    ]
-  end
-
-  def generate_complex_types
-    complex_type_tsorted.map do |name|
-      next unless name.present?
-      tp = Dt.types[name]
-      next unless tp
-      next unless tp[:kind] == :complex_type
-      next if skip_type?(name)
-      {
-        sql: :type,
-        name: type_name(name),
-        columns: generate_attributes(name, tp)
-      }
-    end.compact
-  end
-
-  class THash < Hash
-    include TSort
-    alias tsort_each_node each_key
-    def tsort_each_child(node, &block)
-      (self[node] || []).each(&block)
-    end
-  end
-
-  def complex_type_tsorted
-    Dt.types
-    .each_with_object(THash.new) do |(name, tp), acc|
-      next unless tp[:kind] == :complex_type
-
-      acc[name.underscore] = tp[:attrs]
-      .values
-      .select {|t| t[:kind] == :complex_type }
-      .map{|t| t[:path] }
-    end.tsort
-  end
-
   def primitive_type(type)
     {
       "code" => 'varchar',
-      "datetime" => 'time',
+      "datetime" => 'timestamp',
       "string" => 'varchar',
       "uri" => 'varchar',
-      "date_time" => 'time',
+      "date_time" => 'timestamp',
       "boolean" => 'boolean',
       "base64_binary" => 'bytea',
       "integer" => 'integer',
